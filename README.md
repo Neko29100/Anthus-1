@@ -1,2 +1,2 @@
 # Anthus 1
- Flight computer in progtress
+ Flight computer in progress
