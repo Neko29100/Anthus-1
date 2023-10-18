@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/neko/Desktop/Anthus-1/Anthus",
-      "program": "c:/Users/neko/Desktop/Anthus-1/Anthus/build/Release/outRelease",
+      "cwd": "c:/Users/neko/Desktop/Anthus-1/AnthusSoft v0.06/Main",
+      "program": "c:/Users/neko/Desktop/Anthus-1/AnthusSoft v0.06/Main/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

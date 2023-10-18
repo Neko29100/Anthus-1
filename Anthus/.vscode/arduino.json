@@ -1,6 +1,7 @@
 {
-    "board": "arduino:avr:uno",
-    "programmer": "arduino:avrispmkii",
-    "port": "COM16",
-    "sketch": "i2ctest.ino"
+    "board": "Seeeduino:samd:seeed_XIAO_m0",
+    "programmer": "Seeeduino:adafruit_jlink",
+    "port": "COM18",
+    "sketch": "Anthus.ino",
+    "configuration": "usbstack=arduino,debug=off,sercom4=include"
 }
