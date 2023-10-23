@@ -91,6 +91,36 @@ public void sensorStatus() {
       }
     }
 
+        if (isValid == 0) { //SD card Status
+      
+      int i = 0;
+      while (i == 0){
+      fill(0xFF000000);
+      noStroke();
+      rect(1370, 45, 100, 40);
+      textSize(20);
+      textAlign(LEFT);
+      fill(0xFFFF0000);
+      text("Offline", 1320, 50);
+      i++;
+      }
+      
+    } else {
+
+      int i = 0; 
+      while (i == 0){
+      fill(0xFF000000);
+      noStroke();
+      rect(1370, 45, 100, 40);
+      textSize(20);
+      textAlign(LEFT);
+      fill(0xFF00FF00);
+      text("Online", 1320, 50);
+      i++;
+      }
+    }
+
+
 
     if (intStroke > 1050 || intStroke < 950) { //Press alt check
 

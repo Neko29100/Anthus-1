@@ -23,18 +23,20 @@ TinyGPSPlus gps;
 SoftwareSerial ss(RXPin, TXPin);
 
 int i = 0;
-int sdStatus, tick;
+int sdStatus;
 
-int i2, interval2 = 0;
+int i2, interval2, interval3 = 0;
 
 double latBuffer, lngBuffer, courseBuffer, speedBuffer, lastUpdate;
 int satellitesConnected;
-void setup()
-{
+int valid;
+
+double prevLat, prevLng;
+
+void setup() {
   Serial.begin(115200);
 
-  if (!SD.begin(sdCardPinChipSelect))
-  {
+  if (!SD.begin(sdCardPinChipSelect)) {
     Serial.println();
     Serial.println("SD Card initialisation Failed");
     while (true)
@@ -43,8 +45,7 @@ void setup()
   Serial.println(F("SD Card is operational"));
   Serial.println();
 
-  if (!bmp.begin())
-  {
+  if (!bmp.begin()) {
     Serial.print("BMP failed to initiate, check wiring");
     while (1)
       ;
@@ -63,13 +64,19 @@ void setup()
   delay(100);
 }
 
-void loop()
-{
-
+void loop() {
   
+  if (millis() - interval3 > 5000 && gps.location.isUpdated() == true) {
+    interval3 = millis();
+    prevLat = latBuffer;
+    prevLng = lngBuffer;
 
-  if (millis() - interval > 1000)
-  {
+    }
+
+
+
+
+  if (millis() - interval > 1000) {
 
 
     while (ss.available() > 0)
@@ -77,7 +84,6 @@ void loop()
       displayInfo();
 
     interval = millis();
-    tick++;
 
     humd = myHumidity.readHumidity();
     Temp = bmp.readTemperature();
@@ -102,7 +108,7 @@ void loop()
     Serial.print(latBuffer, 6);
     delay(1);
     Serial.print(',');
-    Serial.print(lngBuffer, 6);
+    Serial.print(lngBuffer, 7);
     delay(1);
     Serial.print(',');
     Serial.print(courseBuffer);
@@ -114,52 +120,51 @@ void loop()
     Serial.print(satellitesConnected);
     delay(1);
     Serial.print(',');
-    Serial.println(gps.location.age());
+    Serial.print(gps.location.age());
+    delay(1);
+    Serial.print(',');
+    Serial.print(valid);
+    delay(1);
+    Serial.print(',');
+    Serial.println(gps.distanceBetween(latBuffer, lngBuffer, prevLat, prevLng));
+    delay(1);
+  } 
+
+  if (millis() > 5000 && gps.charsProcessed() < 10) {
+  valid = false;
+} else {
+  valid = gps.location.isValid();
   }
 }
+ 
+void displayInfo() {
 
-void displayInfo()
-{
- // if (millis() - interval2 > 200)
-  //{
     interval2 = millis();
     latBuffer = gps.location.lat();
     lngBuffer = gps.location.lng();
     courseBuffer = gps.course.deg();
     speedBuffer = gps.speed.mps();
     satellitesConnected = gps.satellites.value();
-    tick = 0;
-  //}
+
 }
 
-void sdLog()
-{
+void sdLog() {
 
   timestamp = millis() / 100;
-
-  if (isnan(humd))
-  {
-    Serial.println(F("No values from HTU21D, Check wiring"));
-    delay(2000);
-    return;
-  }
-  if (isnan(Temp || Press))
-  {
-    Serial.println(F("No values from BMP280, Check wiring"));
-    delay(2000);
-    return;
-  }
 
   String roundedHum = String(humd, 1);
   String roundedTemp = String(Temp, 1);
   String roundedPress = String(Press, 1);
+  String roundedAzimuth = String(courseBuffer, 1);
+  String roundedSpeed = String(speedBuffer, 1);
   roundedHum.replace(".", ",");
   roundedTemp.replace(".", ",");
   roundedPress.replace(".", ",");
+  roundedAzimuth.replace(".", ",");
+  roundedSpeed.replace(".", ",");
 
   myFile = SD.open(fileName, FILE_WRITE);
-  if (myFile)
-  {
+  if (myFile) {
 
     if (i == 0)
     {
@@ -179,16 +184,15 @@ void sdLog()
     myFile.print(";");
     myFile.print(lngBuffer);
     myFile.print(";");
-    myFile.print(courseBuffer);
+    myFile.print(roundedAzimuth);
     myFile.print(";");
-    myFile.println(speedBuffer);
+    myFile.println(roundedSpeed);
     myFile.print(";");
     myFile.println(gps.location.age());
     myFile.close();
     sdStatus = 1;
   }
-  else
-  {
+  else {
     Serial.println(F("Failed to log on the SD card"));
     sdStatus = 0;
   }

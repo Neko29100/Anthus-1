@@ -10,7 +10,8 @@ public void rtVal( ){
     rect(1437, 115, 35, 20);    
     rect(1037, 190, 35, 20);    
     rect(1137, 190, 35, 20);
-    rect(1237, 190, 35, 20);         
+    rect(1237, 190, 35, 20);    
+    rect(1750, 1025, 400, 40);        
     fill(0xFFFFFFFF);
     
     textSize(20); //Values in real time
@@ -28,6 +29,7 @@ public void rtVal( ){
     text("BMP280", 1020, 25);
     text("HTU21D", 1120, 25);
     text("SD Card", 1220, 25);
+    text("GPS", 1320, 25);
     text("Temp.", 1020, 100);
     text("Speed", 1320, 100);
     text("Altitude", 1220, 100);
@@ -37,6 +39,10 @@ public void rtVal( ){
     text("N° Sats.", 1120, 175);
     text("Time since last update", 1220, 175);
     
+    text("Long :", 1790, 1030); //Stats under map
+    text(nf(lng1, 0, 6), 1830, 1030);
+    text("Lat :", 1645, 1030);
+    text(nf(lat1, 0 , 6), 1700, 1030);
       
     text("°C", 1055, 120); //Units in RT
     text("m/s", 1365, 120); 
@@ -47,20 +53,20 @@ public void rtVal( ){
 
 
     pushMatrix();
-    translate(1500, 300); // Translates the coordinate system into the center of the screen, so that the rotation happen right in the center
-     rotateZ(radians(-int(azimuth))); // Rotates the Compass around Z - Axis 
+    translate(1760, 300); // Translates the coordinate system into the center of the screen, so that the rotation happen right in the center
+     rotate(radians(-int(azimuth))); // Rotates the Compass around Z - Axis 
     image(imgCompass, -160, -149, 320, 298); // Loads the Compass image and as the coordinate system is relocated we need need to set the image at -960x, -540y (half the screen size)
   
     popMatrix(); // Brings coordinate system is back to the original position 0,0,0
   
     stroke(#FF0000);
-    line(1500, 300, 1500, 180);
+    line(1760, 300, 1760, 180);
       
     pushMatrix();
-    translate(1500, 300);
+    translate(1760, 300);
     rotate(PI);
     image(gradient, -160, -150, 320, 300);
     popMatrix();  
 
-
+    image(img, 1845, 0, 70, 70);
 }

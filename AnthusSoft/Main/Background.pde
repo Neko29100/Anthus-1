@@ -1,6 +1,6 @@
 public void drawBackground(){
     
-
+    //background(0);
 
     textSize(20); //Text in Graph
     fill(0xFFFFFFFF);
@@ -26,7 +26,7 @@ public void drawBackground(){
     text("SL :", 228, 565);
     text(intStroke, 250, 565);
     
-    image(img, 1625, 0, 70, 70);
+    text("AnthusSoft v0.1", 50, 1030);
 
     backgroundReset = 0; // Runs the code only once
 }
@@ -37,6 +37,7 @@ void drawGrid () {
     line(0, 500, 1000, 500);
     line(500, 1000, 500, 0);
     line(1000, 0, 1000, 1000);
-    line(1000, 70, 1700, 70);
-    line(1000, 140, 1700, 140);
+    line(1000, 70, 1920, 70);
+    line(1000, 140, 1920, 140);
+    line(0, 1000, 1000, 1000);
 }
